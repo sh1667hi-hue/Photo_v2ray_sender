@@ -6,15 +6,22 @@ import java.net.Socket;
 public class ConfigTester {
 
     public static int testLatency(String host, int port) {
+
         long start = System.currentTimeMillis();
 
         try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(host, port), 3000);
+
+            socket.connect(
+                    new InetSocketAddress(host, port),
+                    2000 // کمتر = سریع‌تر تست میشه
+            );
+
+            socket.setSoTimeout(2000);
+
         } catch (Exception e) {
-            return -1; // fail
+            return -1;
         }
 
-        long end = System.currentTimeMillis();
-        return (int) (end - start);
+        return (int) (System.currentTimeMillis() - start);
     }
 }
